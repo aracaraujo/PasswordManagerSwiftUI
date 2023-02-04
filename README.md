@@ -11,7 +11,7 @@ process are stored in a Firebase database.
 
 The link bellow is a demonstration of the app running.
 
-[Password Manager Demo Video](http://url.link.goes.here)
+[Password Manager Demo Video](https://www.youtube.com/watch?v=BcPQ3plsElw)
 
 # Development Environment
 
