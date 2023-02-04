@@ -8,6 +8,27 @@
 import SwiftUI
 import Firebase
 
+struct SecureTextField: View {
+    
+    @State var isSecureField: Bool = true
+    @Binding var text: String
+    
+    var body: some View {
+        HStack{
+            if isSecureField{
+                SecureField("Password", text: $text)
+            } else{
+                TextField(text, text: $text)
+            }
+        }.overlay(alignment: .trailing){
+                    Image(systemName: isSecureField ? "eye.slash": "eye")
+                        .onTapGesture {
+                            isSecureField.toggle()
+            }
+        }
+    }
+}
+
 struct ContentView: View {
     @State private var email: String = ""
     @State private var password: String = ""
@@ -37,7 +58,7 @@ struct ContentView: View {
                         Text("Email")
                             .fontWeight(.heavy)
                             .foregroundColor(Color.white)
-                        TextField("Enter Email", text: $email)
+                        TextField("Email", text: $email)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.emailAddress)
                             .autocorrectionDisabled()
@@ -50,7 +71,7 @@ struct ContentView: View {
                         Text("Password")
                             .fontWeight(.heavy)
                             .foregroundColor(Color.white)
-                        SecureField("Enter Password", text: $password)
+                        SecureTextField(text: $password)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .textInputAutocapitalization(.never)
                     }
@@ -61,7 +82,7 @@ struct ContentView: View {
                         Button("Login"){
                             login()
                         }
-                        .foregroundColor(Color.white)
+                        .foregroundColor(.white)
                         .font(.headline)
                         .fontWeight(.heavy)
                         Spacer()
@@ -88,6 +109,7 @@ struct ContentView: View {
         .alert(alertMessage, isPresented: $showAlert){
             Button("OK", role: .cancel){}
         }
+        .accentColor(.white)
     }
     func register(){
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
@@ -110,6 +132,7 @@ struct ContentView: View {
                 showAlert = true
             }else{
                 print("Login Successful")
+                UserDefaults.standard.set(email, forKey: "email")
                 path.append("ListView")
             }
             

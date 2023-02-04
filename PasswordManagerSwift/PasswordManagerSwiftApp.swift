@@ -10,13 +10,14 @@ import Firebase
 
 @main
 struct PasswordManagerSwiftApp: App {
-    
+    @StateObject var recordVM = RecordViewModel()
     init(){
         FirebaseApp.configure()
     }
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(recordVM)
         }
     }
 }
